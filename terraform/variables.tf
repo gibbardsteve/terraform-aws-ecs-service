@@ -1,9 +1,3 @@
-variable "app_name" {
-  description = "Application name"
-  type        = string
-  default     = "sdp"
-}
-
 variable "aws_account_id" {
   description = "AWS Account ID"
   type        = string
@@ -44,6 +38,12 @@ variable "from_port" {
   default     = 5000
 }
 
+variable "service_subdomain" {
+  description = "Service subdomain"
+  type        = string
+  default     = "github-audit"
+}
+
 variable "domain" {
   description = "Domain"
   type        = string
@@ -54,12 +54,6 @@ variable "domain_extension" {
   description = "Domain extension"
   type        = string
   default     = "aws.onsdigital.uk"
-}
-
-variable "service_subdomain" {
-  description = "Service subdomain"
-  type        = string
-  default     = "github-audit"
 }
 
 variable "service_cpu" {
@@ -98,7 +92,25 @@ variable "github_org" {
   default     = "ONS-Innovation"
 }
 
+variable "project_tag" {
+  description = "Project"
+  type        = string
+  default     = "SDP"
+}
+
+variable "team_owner_tag" {
+  description = "Team Owner"
+  type        = string
+  default     = "Knowledge Exchange Hub"
+}
+
+variable "business_owner_tag" {
+  description = "Business Owner"
+  type        = string
+  default     = "DST"
+}
 
 locals {
   url = "${var.domain}.${var.domain_extension}"
+  service_url = "${var.service_subdomain}.${local.url}"
 }

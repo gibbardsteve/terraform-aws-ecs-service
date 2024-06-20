@@ -11,7 +11,7 @@ terraform {
 # Create Alias record to forward request to ALB
 resource "aws_route53_record" "route53_record" {
   zone_id = data.aws_route53_zone.route53_domain.zone_id
-  name    = "${var.service_subdomain}.${local.url}"
+  name    = "${local.service_url}"
   type    = "A"
 
   alias {
@@ -38,7 +38,7 @@ resource "aws_lb_listener_rule" "github_audit_listener_rule" {
 
   condition {
     host_header {
-      values = ["${var.service_subdomain}.${local.url}"]
+      values = ["${local.service_url}"]
     }
   }
 
@@ -65,7 +65,7 @@ resource "aws_lb_listener_rule" "success_rule" {
 
   condition {
     host_header {
-      values = ["${var.service_subdomain}.${local.url}"]
+      values = ["${local.service_url}"]
     }
   }
 
@@ -88,7 +88,7 @@ resource "aws_lb_listener_rule" "exempt_rule" {
 
   condition {
     host_header {
-      values = ["${var.service_subdomain}.${local.url}"]
+      values = ["${local.service_url}"]
     }
   }
 
@@ -299,7 +299,7 @@ resource "aws_cognito_user_pool" "github_audit_user_pool" {
     allow_admin_create_user_only = true
 
     invite_message_template {
-      email_message = "You have been added as a user to the <a href='https://${var.service_subdomain}.${local.url}/'>ONS Github Audit Tool</a><br>Your username is {username} and temporary password is <strong>{####}</strong>"
+      email_message = "You have been added as a user to the <a href='https://${local.service_url}/'>ONS Github Audit Tool</a><br>Your username is {username} and temporary password is <strong>{####}</strong>"
       email_subject = "Your access to the ${var.service_subdomain} tool"
       sms_message   = "Your username is {username} and temporary password is <strong>{####}</strong>"
     }
@@ -326,7 +326,7 @@ resource "aws_cognito_user_pool_domain" "main" {
 resource "aws_cognito_user_pool_client" "userpool_client" {
   name                                 = "${var.service_subdomain}-client"
   user_pool_id                         = aws_cognito_user_pool.github_audit_user_pool.id
-  callback_urls                        = ["https://${var.service_subdomain}.${local.url}/oauth2/idpresponse"]
+  callback_urls                        = ["https://${local.service_url}/oauth2/idpresponse"]
   allowed_oauth_flows_user_pool_client = true
   generate_secret                      = true
   prevent_user_existence_errors        = "ENABLED"
