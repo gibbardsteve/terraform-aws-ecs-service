@@ -19,7 +19,7 @@ variable "container_image" {
   default     = "github-audit"
 }
 
-variable "container_tag" {
+variable "container_ver" {
   description = "Container tag"
   type        = string
   default     = "v0.0.1"
@@ -110,7 +110,13 @@ variable "business_owner_tag" {
   default     = "DST"
 }
 
+variable "force_deployment" {
+  description = "Force new task definition deployment"
+  type        = string
+  default     = "false"
+}
+
 locals {
-  url = "${var.domain}.${var.domain_extension}"
+  url         = "${var.domain}.${var.domain_extension}"
   service_url = "${var.service_subdomain}.${local.url}"
 }
